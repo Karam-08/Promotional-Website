@@ -1,0 +1,37 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    text-align: center;
+    background-color: #EEE;
+    color: #333;
+}
+
+section{
+    display: flex;
+    justify-content: center;
+}
+
+form{
+    max-width: 34rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+    background-color: rgb(225, 230, 231)
+}
+
+.grid{
+    display: flex;
+    flex-direction: row;
+}
+
+#toggleInfo{
+    background-color: rgb(62, 137, 159);
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+
+.hidden{
+    display: none;
+}
