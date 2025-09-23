@@ -12,29 +12,39 @@
         <p>Hello! This is a promotional website for Underbrush.</p>
         <section class="card">
             <form method="POST" action="api/info" id="sign-form">
-                <div id="grid">
+                <div id="form">
                     <label>First Name:
-                        <input type="text" name="firstName" required>
+                        <input type="text" name="firstName" placeholder="EX: John" required>
                     </label>
                     <label>Last Name:
-                        <input type="text" name="lastName" required>
+                        <input type="text" name="lastName" placeholder="EX: Doe" required>
                     </label>
                     <label>Email:
-                        <input type="text" name="email" required>
+                        <input type="text" id="email" name="email" placeholder="EX: abc123@gmail.com" required>
                     </label>
+                    <label>Question:
+                        <input type="text" name="question" placeholder="Try to keep it short">
+                    </label>
+                    <button onclick="submit()">Submit Info</button>
                     <button onclick="toggleInfo()" id="toggleInfo">More Information</button>
                 </div>
             </form>
         </section>
         <section class="hidden" id="hidden">
             <h2>Information</h2>
-            <p>It all started when the owner Nathan looked at the ingredients list for gum. He saw the term "gum base" and did his research.
+            <p id="text">It all started when the owner Nathan looked at the ingredients list for gum. He saw the term "gum base" and did his research.
                 He saw that the gum base has rubber, plastics, and flavor modifiers.
                 Nathan then asked himself "what if there was a gum that actually healed your teeth?".
                 He eventually created a gum that remineralizes your teeth and kills bad bacteria.
                 The gum itself has a base of mastic, spruce, and chicle. These were saps that were chewed on centuries ago, and research shows that they have healing properties.
                 The gum also has nano-hydroxyapatite. Hydroxyapatite is an essential mineral found in teeth. The nano-hydroxyapatite helps to remineralize and strengthens the tooth enamel.
+                With all of these ingredients, Underbrush will greatly improve your dental hygiene.
             </p>
+            <h2>Video explaining Underbrush</h2>
+            <video controls width="360px" height="460px">
+                <source src="./underbrush video.mp4">
+            </video>
+        <a href="https://nathanandsons.com/" id="link">Link if you're interested</a>
         </section>
     </main>
 </body>
