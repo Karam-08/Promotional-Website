@@ -28,3 +28,45 @@ export async function listInfo(){
         return []
     }
 }
+
+function dataValidation(input){
+    const errors = []
+
+    const firstName = String(input.firstName || "").trim()
+    const lastName = String(input.lastName || "").trim()
+    const email = String(input.email || "").trim()
+    const question = String(input.question || "").trim()
+
+    if(!firstName){errors.push("First Name required")}
+    if(!lastName){errors.push("Last Name required")}
+
+    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/){errors.push("Valid email is required")}
+
+    const capitalize = (s) => s.charAt(0).toUpperCase()+s.slice(1).toLowerCase()
+
+    return{
+        firstName: capitalize(firstName),
+        lastName: capitalize(lastName),
+        email: email.toLowerCase(),
+    }
+}
+
+function genID(){
+    return(Date.now().toString(36) + Math.random().toString(36).slice(2, 8).toUpperCase())
+}
+
+export async function addInfo(input){
+    const cleanData = dataValidation(input)
+
+    const newData = {
+        id: Date.now().toString(36),
+        ...cleanData,
+        fullName: `${cleanData.firstName}, ${cleanData.lastName}`,
+        createdAt: new Date().toISOString()
+    }
+    
+    const info = await listInfo()
+    info.push(newData)
+    await fs.writeFile(file, JSON.stringify(info, null, 2), 'utf8')
+    return newData
+}

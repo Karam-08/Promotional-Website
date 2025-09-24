@@ -79,6 +79,95 @@ app.get('/', (req, res) =>{
     })
 })
 
+app.get('/info', async (req, res) =>{
+    try{
+        const info = await readDB()
+        res.status(200).json(info)
+    }catch(err){
+        console.error(err)
+        res.status(500).json({error: "Server failed to read the information."})
+    }
+})
+
+app.get('/students/:id', async (req, res) =>{
+    try{
+        const info = await readDB()
+        const data = info.find(i => i.id == req.params.id)
+        if(!student){
+            return res.status(404).json({error: "Data for that individual was not found."})
+        }
+    }catch(err){
+        console.error(err)
+        res.status(500).json({error: 'Server failed to read all of the information.'})
+    }
+})
+
+app.post('/students', async (req, res) =>{
+    try{
+        let {id, firstName, lastName, question} = req.body;
+
+        if(!id || !firstName || !lastName || !question){
+            return res.status(400).json({
+                error: "Invalid Body. Required: ID, firstName, lastName, question."
+            });
+        }
+
+        const student = await readDB();
+        if(info.some(i => i.id === id)){
+            return res.status(409).json({error: "ID already exists."})
+        }
+
+        const newData = {id, firstName, lastName, year};
+        info.push(newData)
+        await writeDB(info)
+
+        res.status(201).json(newData)
+    }catch(err){
+        console.error(err)
+        res.status(500).json({error: "Server cannot add that data."})
+    }
+})
+
+app.put('/students/:id', async (req, res) =>{
+    try{
+        const info = await readDB()
+        const idx = info.findIndex(i => i.id == req.params.id)
+
+        if(idx === -1){
+            return res.status(404).json({error: "The data for that individual was not found."})
+        }
+
+        if(firstName !== undefined){info[idx].firstName = firstName;}
+        if(lastName !== undefined){info[idx].lastName = lastName;}
+        if(year !== undefined){info[idx].year = year;}
+
+        await writeDB(info);
+        res.status(200).json(info[idx])
+    }catch(err){
+        console.error(err)
+        res.status(500).json({error: "Server failed to update"})
+    }
+})
+
+app.delete('/info/:id', async (req, res) =>{
+    try{
+        const info = await readDB()
+        const idx = info.findIndex(s => s.id == req.params.id)
+
+        if(idx === -1){
+            return res.status(404).json({error: "The data for that individual was not found."})
+        }
+
+        const deletedData = info.splice(idx, 1)[0];
+        await writeDB(info)
+        
+        res.status(200).json(deletedData)
+    }catch(err){
+        console.error(err)
+        res.status(500).json({error: "Server failed to delete the data."})
+    }
+})
+
 // 404 handler
 app.use((req, res) =>{
     res.status(404).send("Sorry, we couldn't find that page.")
