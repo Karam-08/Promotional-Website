@@ -20,13 +20,13 @@
                         <input type="text" name="lastName" placeholder="EX: Doe" required>
                     </label>
                     <label>Email:
-                        <input type="text" id="email" name="email" placeholder="EX: abc123@gmail.com" required>
+                        <input type="email" id="email" name="email" placeholder="EX: abc123@gmail.com" required>
                     </label>
                     <label>Question:
                         <input type="text" name="question" placeholder="Try to keep it short">
                     </label>
-                    <button onclick="submit()">Submit Info</button>
-                    <button onclick="toggleInfo()" id="toggleInfo">More Information</button>
+                    <button type="submit">Submit Info</button>
+                    <button type="button" onclick="toggleInfo()" id="toggleInfo">More Information</button>
                 </div>
             </form>
         </section>

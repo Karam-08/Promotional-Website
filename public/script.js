@@ -12,11 +12,29 @@ toggle.addEventListener('click', function(e){
     }
 })
 
-// const email = document.getElementById('email')
-// const emailInput = email.value
+form.addEventListener('submit', async (e) =>{
+    e.preventDefault()
 
-// if(emailInput || /^[^\s@]+@[^\s@]+\.[^\s@]+$/){
-//     return;
-// }else{
+    // Gather form data
+    const formData = Object.fromEntries(new FormData(form).entries())
 
-// }
+    try{
+        const res = await fetch('/api/info', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(formData)
+        })
+
+        const result = await res.json()
+
+        if(res.ok){
+            alert(result.message || "Submitted successfully!")
+            form.reset() // 🔹 Optional: clear the form after submit
+        }else{
+            alert("Error: " + (result.error || "Something went wrong"))
+        }
+    }catch(err){
+        console.error("Submit failed:", err)
+        alert("Network error. Please try again.")
+    }
+})
