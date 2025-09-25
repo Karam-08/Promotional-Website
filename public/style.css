@@ -8,6 +8,8 @@ body{
     text-align: center;
     background-color: #EEE;
     color: #333;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.5; /* Spaces out text */
 }
 
 section{
@@ -17,21 +19,39 @@ section{
     margin: 10px;
 }
 
+.card{
+    background: white;
+    border-radius: 8px;
+    padding: 30px;
+    margin: 15px auto; /* Centers the card */
+    max-width: 600px;
+}
+
 h1, h2{
     margin: 10px;
 }
 
 form{
     max-width: 525px;
-    padding: 8pxrem;
+    padding: 8px;
     border-radius: 8px;
     background-color: rgb(225, 230, 231);
-    box-shadow: 0px 10px 15px;
+    box-shadow: 0px 5px 10px;
 }
 
-.grid{
-    display: flex;
-    flex-direction: row;
+input{
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #CCC;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+input:focus{ /* Happens when you type on the input */
+    outline: none;
+    border-color: rgb(62, 137, 159);
 }
 
 button{
@@ -40,8 +60,12 @@ button{
     border: none;
     border-radius: 8px;
     margin: 5px;
-    padding: 5px;
+    padding: 10px 20px;
     cursor: pointer;
+}
+
+button:hover{
+    background-color: rgb(48, 110, 128);
 }
 
 .hidden{
@@ -61,4 +85,22 @@ button{
     padding: 10px;
     color: white;
     border-radius: 8px;
+}
+
+video{
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+#link{
+    margin-top: 15px;
+    padding: 10px 15px;
+    background: rgb(62, 137, 159);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+#link:hover{
+    background: rgb(48, 110, 128);
 }
