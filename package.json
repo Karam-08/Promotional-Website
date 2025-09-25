@@ -1,6 +1,7 @@
 {
   "name": "promotional-website",
   "version": "1.0.0",
+  "type": "module",
   "description": "This is a portfolio-ready promotional website for a product or organization using Node.js and Express.js.",
   "main": "app.js",
   "scripts": {

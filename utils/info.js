@@ -39,8 +39,11 @@ function dataValidation(input){
 
     if(!firstName){errors.push("First Name required")}
     if(!lastName){errors.push("Last Name required")}
+    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){errors.push("Valid email is required")}
 
-    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/){errors.push("Valid email is required")}
+    if(errors.length > 0){
+        throw new Error(errors.join(", "))
+    }
 
     const capitalize = (s) => s.charAt(0).toUpperCase()+s.slice(1).toLowerCase()
 
@@ -48,6 +51,7 @@ function dataValidation(input){
         firstName: capitalize(firstName),
         lastName: capitalize(lastName),
         email: email.toLowerCase(),
+        question
     }
 }
 
@@ -59,9 +63,9 @@ export async function addInfo(input){
     const cleanData = dataValidation(input)
 
     const newData = {
-        id: Date.now().toString(36),
+        id: genID(),
         ...cleanData,
-        fullName: `${cleanData.firstName}, ${cleanData.lastName}`,
+        fullName: `${cleanData.firstName} ${cleanData.lastName}`,
         createdAt: new Date().toISOString()
     }
     

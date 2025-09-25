@@ -13,10 +13,13 @@ const PORT = 5000
 // Middleware
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 
 app.use(express.static(path.join(__dirname, 'public')))
+
 ensureDataFile()
 
+// Root route
 app.get('/', (req, res) =>{
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
