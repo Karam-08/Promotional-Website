@@ -8,7 +8,7 @@ body{
     text-align: center;
     background-color: #EEE;
     color: #333;
-    font-family: sans-serif;
+    font-family: sans-serif; /* Good classy looking font */
     line-height: 1.5; /* Spaces out text */
 }
 
@@ -49,7 +49,7 @@ input{
 
 input:focus{ /* Happens when you type on the input */
     outline: none;
-    border-color: rgb(62, 137, 159);
+    border-color: rgb(62, 137, 159); /* Matches website color scheme */
 }
 
 button{
