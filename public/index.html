@@ -11,7 +11,7 @@
         <h1>Underbrush Promotional Website</h1>
         <p>This is a promotional website for Underbrush.</p>
         <section class="card">
-            <form method="POST" action="api/info" id="sign-form">
+            <form method="POST" action="/submit-form" id="sign-form">
                 <div id="form">
                     <label>First Name:
                         <input type="text" name="firstName" placeholder="EX: John" required>
@@ -22,8 +22,12 @@
                     <label>Email:
                         <input type="email" id="email" name="email" placeholder="EX: abc123@gmail.com" required>
                     </label>
-                    <label>Question:
-                        <input type="text" name="question" placeholder="This is optional. Please read the information section first.">
+                    <label>I am interested in:
+                        <select name="interest" id="interest">
+                            <option value="newsletter">Newsletter</option>
+                            <option value="info">Even More Information</option>
+                            <option value="none">None of the Above</option>
+                        </select>
                     </label>
                     <button type="submit">Submit Info</button>
                     <button type="button" onclick="toggleInfo()" id="toggleInfo">More Information</button>

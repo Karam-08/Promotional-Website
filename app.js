@@ -25,21 +25,21 @@ app.get('/', (req, res) =>{
 })
 
 // Gets all of the submissions
-app.get('/api/info', async (req, res, next) =>{
+app.get('/submissions', async (req, res, next) =>{
     try{
-        const entries = await listInfo()
-        res.status(200).json({ count: entries.length, entries })
+        const submissions = await listInfo()
+        res.status(200).json({ count: submissions.length, submissions })
     }catch(err){
         next(err)
     }
 })
 
 // Adds a new submission
-app.post('/api/info', async (req, res, next) =>{
+app.post('/submit-form', async (req, res, next) =>{
     try{
         const data = req.body
         const created = await addInfo(data)
-        res.status(201).json({message: "Info submitted successfully", entry: created})
+        res.status(201).json({message: "Form submitted successfully", submission: created})
     }catch(err){
         next(err)
     }

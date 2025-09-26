@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const folder = path.join(__dirname, '..', 'data')
-const file = path.join(folder, 'info.json')
+const file = path.join(folder, 'submissions.json')
 
 // Ensure file exists
 export async function ensureDataFile(){
@@ -35,11 +35,17 @@ function dataValidation(input){
     const firstName = String(input.firstName || "").trim()
     const lastName = String(input.lastName || "").trim()
     const email = String(input.email || "").trim()
-    const question = String(input.question || "").trim()
+    const interest = String(input.interest || "").trim().toLowerCase()
 
     if(!firstName){errors.push("First Name required")}
     if(!lastName){errors.push("Last Name required")}
-    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){errors.push("Valid email is required")}
+    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+        errors.push("Valid email is required")
+    }
+
+    if(!interest || !["newsletter", "info", "none"].includes(interest)){
+        errors.push("Interest must be 'newsletter' or 'info' or 'none")
+    }
 
     if(errors.length > 0){
         throw new Error(errors.join(", "))
@@ -51,7 +57,7 @@ function dataValidation(input){
         firstName: capitalize(firstName),
         lastName: capitalize(lastName),
         email: email.toLowerCase(),
-        question
+        interest
     }
 }
 
