@@ -26,14 +26,8 @@ app.get('/', (req, res) =>{
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 
-// Gets all of the submissions
-app.get('/submissions', async (req, res, next) =>{
-    try{
-        const submissions = await listInfo()
-        res.status(200).json({ count: submissions.length, submissions })
-    }catch(err){
-        next(err)
-    }
+app.get('/login', (req, res) =>{
+    res.sendFile(path.join(__dirname, 'public', 'login.html'))
 })
 
 // Adds a new submission
@@ -42,6 +36,48 @@ app.post('/submit-form', async (req, res, next) =>{
         const data = req.body
         const created = await addInfo(data)
         res.status(201).json({message: "Form submitted successfully", submission: created})
+    }catch(err){
+        next(err)
+    }
+})
+
+app.post('/auth/login', async (req, res, next) =>{
+    try{
+
+    }catch(err){
+        next(err)
+    }
+})
+
+// Gets all of the submissions
+app.get('/admin/api/submissions', async (req, res, next) =>{
+    try{
+        const submissions = await listInfo()
+        res.status(200).json({ count: submissions.length, submissions })
+    }catch(err){
+        next(err)
+    }
+})
+
+app.patch('/admin/api/submissions/:id', async (req, res, next) =>{
+    try{
+
+    }catch(err){
+        next(err)
+    }
+})
+
+app.delete('/admin/api/submissions/:id', async (req, res, next) =>{
+    try{
+
+    }catch(err){
+        next(err)
+    }
+})
+
+app.get('/admin/api/stats', async (req, res, next) =>{
+    try{
+
     }catch(err){
         next(err)
     }

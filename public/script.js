@@ -12,7 +12,7 @@ toggle.addEventListener('click', function(e){ // Toggles information showing
     }
 })
 
-form.addEventListener('submit', async (e) =>{ // Form submission
+form.addEventListener('submit', async(e) =>{ // Form submission
     e.preventDefault()
 
     // Gather form data
