@@ -82,3 +82,37 @@ export async function addInfo(input){
     await fs.writeFile(file, JSON.stringify(info, null, 2), 'utf8')
     return newData
 }
+
+const dataFile = path.join(__dirname, '..', 'data', 'submissions.json')
+
+// Updates a submission
+export async function updateInfo(id, updates){
+    const raw = await fs.readFile(dataFile, 'utf8')
+    const submissions = JSON.parse(raw)
+
+    const idx = submissions.findIndex(s => String(s.id) === String(id))
+    if(idx === -1){
+        throw new Error('Submission not found')
+    }
+
+    submissions[idx] = {...submissions[idx], ...updates}
+
+    await fs.writeFile(dataFile, JSON.stringify(submissions, null, 2))
+    return submissions[idx]
+}
+
+// Deletes a submission
+export async function deleteInfo(id){
+    const raw = await fs.readFile(dataFile, 'utf8')
+    const submissions = JSON.parse(raw)
+
+    const idx = submissions.findIndex(s => String(s.id) === String(id))
+    if(idx === -1){
+        throw new Error('Submission not found')
+    }
+
+    const [removed] = submissions.splice(idx, 1)
+
+    await fs.writeFile(dataFile, JSON.stringify(submissions, null, 2))
+    return removed
+}

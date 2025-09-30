@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <main class="container">
+        <h1>Admin Dashboard</h1>
+        <p>View every submission from submissions.json</p>
+        <section id="card">
+            <form id="filter-form"> <!-- Filter controls -->
+                <input type="text" name="email" placeholder="Search by email">
+                <select name="interest">
+                    <option value="none">None of the Above</option>
+                    <option value="newsletter">Newsletter</option>
+                    <option value="info">Even More Information</option>
+                </select>
+                <label>Start Date:
+                    <input type="date" name="startDate">
+                </label>
+                <label>End Date:
+                    <input type="date" name="endDate">
+                </label>
+                <button type="submit">Apply Filters</button>
+                <button type="button" id="resetFilters">Reset</button>
+            </form>
+        </section>
+
+        <section class="card"> <!-- Results section-->
+            <h2>Submissions</h2>
+                <div id="submissionsContainer">
+                    <p>Loading submissions...</p> <!-- Text gets replaced with the actual submissions once fully loaded -->
+                </div>
+        </section>
+    </main>
+</body>
+<script src="admin.js"></script>
+</html>

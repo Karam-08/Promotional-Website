@@ -1,5 +1,6 @@
 const infoSection = document.getElementById('hidden')
 const toggle = document.getElementById('toggleInfo') // Buttons
+const form = document.getElementById('form')
 
 toggle.addEventListener('click', function(e){ // Toggles information showing
     e.preventDefault()
@@ -14,9 +15,7 @@ toggle.addEventListener('click', function(e){ // Toggles information showing
 
 form.addEventListener('submit', async(e) =>{ // Form submission
     e.preventDefault()
-
-    // Gather form data
-    const formData = Object.fromEntries(new FormData(form).entries())
+    const formData = Object.fromEntries(new FormData(form).entries()) // Gathers the form data
 
     try{
         const res = await fetch('/submit-form', {
@@ -24,9 +23,7 @@ form.addEventListener('submit', async(e) =>{ // Form submission
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(formData)
         })
-
         const result = await res.json()
-
         if(res.ok){
             alert(result.message || "Submitted successfully!")
             form.reset() // Clears the form after submission

@@ -4,7 +4,8 @@ import express from 'express'
 import path from 'path'
 import {fileURLToPath} from 'url'
 import morgan from 'morgan'
-import {ensureDataFile, listInfo, addInfo} from './utils/info.js'
+import {ensureDataFile, listInfo, addInfo, updateInfo, deleteInfo} from './utils/info.js'
+import {ensureUsersFile, authenticateUser} from './utils/auth.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -20,14 +21,37 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 app.use(express.static(path.join(__dirname, 'public')))
 
 ensureDataFile()
+ensureUsersFile()
 
-// Root route
+// Main route
 app.get('/', (req, res) =>{
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 
+// Login page
 app.get('/login', (req, res) =>{
     res.sendFile(path.join(__dirname, 'public', 'login.html'))
+})
+
+// Admin page
+app.get('/admin', (req, res) =>{
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'))
+})
+
+// Login check
+app.post('/auth/login', async (req, res) =>{
+    try{
+        const {email, password} = req.body
+        const user = await authenticateUser(email, password)
+
+        if(user.role === "admin"){ // If they have an admin role,
+            res.redirect('/admin') // they go to the admin page
+        }else{
+            res.redirect('/') // If not, they go to the main page
+        }
+    }catch(err){ // If they put in the wrong email/password,
+        res.status(401).send("Invalid email or password.") // error message
+    }
 })
 
 // Adds a new submission
@@ -36,14 +60,6 @@ app.post('/submit-form', async (req, res, next) =>{
         const data = req.body
         const created = await addInfo(data)
         res.status(201).json({message: "Form submitted successfully", submission: created})
-    }catch(err){
-        next(err)
-    }
-})
-
-app.post('/auth/login', async (req, res, next) =>{
-    try{
-
     }catch(err){
         next(err)
     }
@@ -59,17 +75,24 @@ app.get('/admin/api/submissions', async (req, res, next) =>{
     }
 })
 
+// Updates a submission
 app.patch('/admin/api/submissions/:id', async (req, res, next) =>{
     try{
-
+        const {id} = req.params
+        const updates = req.body
+        const updated = await updateInfo(id, updates)
+        res.status(200).json({message: 'Submission Updated:', updated})
     }catch(err){
         next(err)
     }
 })
 
+// Deletes a submission
 app.delete('/admin/api/submissions/:id', async (req, res, next) =>{
     try{
-
+        const {id} = req.params
+        const removed = await deleteInfo(id)
+        res.status(200).json({message: 'Submission Deleted:', removed})
     }catch(err){
         next(err)
     }
