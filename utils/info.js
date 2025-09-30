@@ -1,5 +1,3 @@
-/* Mainly copied from teacher codealong */
-
 import fs from 'fs/promises'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -67,6 +65,7 @@ function genID(){
     return(Date.now().toString(36) + Math.random().toString(36).slice(2, 8).toUpperCase())
 }
 
+// Adds a submission
 export async function addInfo(input){
     const cleanData = dataValidation(input)
 

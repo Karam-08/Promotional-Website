@@ -14,10 +14,12 @@
             <form id="filter-form"> <!-- Filter controls -->
                 <input type="text" name="email" placeholder="Search by email">
                 <select name="interest">
-                    <option value="none">None of the Above</option>
+                    <option value="">-- Interest Filter --</option>
                     <option value="newsletter">Newsletter</option>
                     <option value="info">Even More Information</option>
                 </select>
+                <br>
+                <br>
                 <label>Start Date:
                     <input type="date" name="startDate">
                 </label>
@@ -29,8 +31,8 @@
             </form>
         </section>
 
-        <section class="card"> <!-- Results section-->
-            <h2>Submissions</h2>
+        <section class="card" id="results"> <!-- Results section-->
+            <h2>Submissions:</h2>
                 <div id="submissionsContainer">
                     <p>Loading submissions...</p> <!-- Text gets replaced with the actual submissions once fully loaded -->
                 </div>

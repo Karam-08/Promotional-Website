@@ -1,5 +1,3 @@
-/* Mainly copied from teacher codealong */
-
 import express from 'express'
 import path from 'path'
 import {fileURLToPath} from 'url'
@@ -59,7 +57,7 @@ app.post('/submit-form', async (req, res, next) =>{
     try{
         const data = req.body
         const created = await addInfo(data)
-        res.status(201).json({message: "Form submitted successfully", submission: created})
+        res.status(201).json({message: "Form submitted successfully.", submission: created})
     }catch(err){
         next(err)
     }

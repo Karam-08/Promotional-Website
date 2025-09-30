@@ -102,3 +102,11 @@ video{
 #link:hover{
     background: rgb(48, 110, 128);
 }
+
+#results{
+    flex-direction: column;
+}
+
+#results h2{
+    font-size: 30px;
+}
