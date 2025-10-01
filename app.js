@@ -20,6 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 ensureDataFile()
 ensureUsersFile()
+// Makes sure the submissions and the user files exist
 
 // Main route
 app.get('/', (req, res) =>{
@@ -40,14 +41,13 @@ app.get('/admin', (req, res) =>{
 app.post('/auth/login', async (req, res) =>{
     try{
         const {email, password} = req.body
-        const user = await authenticateUser(email, password)
+        const user = await authenticateUser(email, password) // Checks user credentials
 
-        if(user.role === "admin"){ // If they have an admin role,
-            res.redirect('/admin') // they go to the admin page
-        }else{
-            res.redirect('/') // If not, they go to the main page
-        }
-    }catch(err){ // If they put in the wrong email/password,
+        res.status(200).json({ // If valid,
+            message: "Login successful.",
+            user: {email: user.email, role: user.role} // returns with message and user info
+        })
+    }catch(err){ // If invalid,
         res.status(401).send("Invalid email or password.") // error message
     }
 })
@@ -63,18 +63,27 @@ app.post('/submit-form', async (req, res, next) =>{
     }
 })
 
-// Gets all of the submissions
-app.get('/admin/api/submissions', async (req, res, next) =>{
+// Checks for the x-admin-role header to only allow admins
+function requireAdmin(req, res, next){
+    const role = req.headers['x-admin-role']
+    if(role !== 'admin'){
+        return res.status(403).json({error: 'Admins only.'})
+    }
+    next()
+}
+
+// Gets all of the submissions (requires admin)
+app.get('/admin/api/submissions', requireAdmin, async (req, res, next) =>{
     try{
         const submissions = await listInfo()
-        res.status(200).json({ count: submissions.length, submissions })
+        res.status(200).json({count: submissions.length, submissions})
     }catch(err){
         next(err)
     }
 })
 
-// Updates a submission
-app.patch('/admin/api/submissions/:id', async (req, res, next) =>{
+// Updates a submission (requires admin)
+app.patch('/admin/api/submissions/:id', requireAdmin, async (req, res, next) =>{
     try{
         const {id} = req.params
         const updates = req.body
@@ -85,8 +94,8 @@ app.patch('/admin/api/submissions/:id', async (req, res, next) =>{
     }
 })
 
-// Deletes a submission
-app.delete('/admin/api/submissions/:id', async (req, res, next) =>{
+// Deletes a submission (requires admin)
+app.delete('/admin/api/submissions/:id', requireAdmin, async (req, res, next) =>{
     try{
         const {id} = req.params
         const removed = await deleteInfo(id)
@@ -96,9 +105,30 @@ app.delete('/admin/api/submissions/:id', async (req, res, next) =>{
     }
 })
 
-app.get('/admin/api/stats', async (req, res, next) =>{
+// Returns total submissions grouped by interest and status (guess what it requires)
+app.get('/admin/api/stats', requireAdmin, async (req, res, next) =>{
     try{
+        const submissions = await listInfo() // Gets all submissions
 
+        const total = submissions.length // Total number of submissions
+        const byInterest = submissions.reduce((acc, s) =>{ // uses reduce to count the submissions by interest area
+            // "acc" is a basket, and "s" is a fruit being put in the basket
+            
+            acc[s.interest] = (acc[s.interest] || 0) + 1
+            // For each submission (s):
+                // The submission interest count increases by 1
+                // If it hasn't appeared yet, it treats it as 0
+            return acc;
+        }, {})
+
+        const byStatus = submissions.reduce((acc, s) =>{ // Essentially the same thing as before but counts submissions by status
+            acc[s.status || 'pending'] = (acc[s.status || 'pending'] || 0) + 1
+            return acc;
+        }, {})
+
+        res.json({total, byInterest, byStatus}) // Sends back a response containing the total amount of responses, 
+        // the counts per interest area, and the counts per status
+        
     }catch(err){
         next(err)
     }

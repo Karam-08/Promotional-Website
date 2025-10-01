@@ -1,6 +1,15 @@
+const user = JSON.parse(localStorage.getItem("user")) // Gets the current logged in user
+
+if(!user || user.role !== "admin"){ // If they are not signed in or they are not an admin,
+    alert("Admins only.")
+    window.location.href = "/login" // redirect them to the login page
+}
+
 async function loadSubmissions(filters){ // Mainly for filters
     try{
-        const res = await fetch('/admin/api/submissions'); // Gets submissions
+        const res = await fetch('/admin/api/submissions', { // Gets all of the submissions
+            headers: {'x-admin-role': user.role}
+        }); 
         const data = await res.json();
 
         let submissions = data.submissions || [];
@@ -28,10 +37,10 @@ async function loadSubmissions(filters){ // Mainly for filters
 
 async function renderSubmission(submissions){ // Shows the actual submissions
     const container = document.getElementById('submissionsContainer');
-    container.innerHTML = ''; // Refresh
+    container.innerHTML = ''; // Clears container before rendering new submissions
 
-    if(submissions.length === 0){ // Error message
-        container.innerHTML = '<p>No submissions found.</p>';
+    if(submissions.length === 0){ // If no submissions
+        container.innerHTML = '<p>No submissions found.</p>'; // display error
         return;
     }
 
@@ -52,21 +61,27 @@ async function renderSubmission(submissions){ // Shows the actual submissions
     });
 }
 
-// Adds an approved status to the submission
+// Updates submission status to "approved"
 async function approveSubmission(id){
     await fetch(`/admin/api/submissions/${id}`, {
         method: 'PATCH',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+            'Content-Type': 'application/json',
+            'x-admin-role': user.role
+        },
         body: JSON.stringify({status: 'approved'})
     });
     loadSubmissions();
 }
 
-// Adds an archive status to the submission
+// Updates submission status to "archived"
 async function archiveSubmission(id){
     await fetch(`/admin/api/submissions/${id}`, {
         method: 'PATCH',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+            'Content-Type': 'application/json',
+            'x-admin-role': user.role
+        },
         body: JSON.stringify({status: 'archived'})
     });
     loadSubmissions();
@@ -76,6 +91,7 @@ async function archiveSubmission(id){
 async function deleteSubmission(id){
     await fetch(`/admin/api/submissions/${id}`, {
         method: 'DELETE',
+        headers: {'x-admin-role': user.role}
     });
     loadSubmissions();
 }
@@ -83,8 +99,9 @@ async function deleteSubmission(id){
 // Filters the form
 document.getElementById('filter-form').addEventListener('submit', (e) =>{
     e.preventDefault();
-    const filters = Object.fromEntries(new FormData(e.target).entries());
-    loadSubmissions(filters);
+    const filters = Object.fromEntries(new FormData(e.target).entries()); 
+    // collects all the input filter fields, then converts them into key value pairs, then converts that into an object
+    loadSubmissions(filters); // reloads submissions using that filter object
 });
 
 // Resets the filters

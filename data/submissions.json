@@ -1,15 +1,5 @@
 [
   {
-    "id": "mg7146pxY7AP53",
-    "firstName": "John",
-    "lastName": "Doe",
-    "email": "abc123@gmail.com",
-    "interest": "none",
-    "fullName": "John Doe",
-    "createdAt": "2024-05-03T20:47:45.669Z",
-    "status": "archived"
-  },
-  {
     "id": "mg71663kQ6JU9J",
     "firstName": "Karam",
     "lastName": "Abbas",

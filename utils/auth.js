@@ -22,14 +22,13 @@ async function readUsers(){
     return JSON.parse(raw || '[]')
 }
 
-// This checks for the correct email and password
 export async function authenticateUser(email, password){
-    const users = await readUsers() // Reads users from users.json
-    const user = users.find(u => u.email === email.toLowerCase() && u.password === password) // Gets the user email and password from users.json
+    const users = await readUsers() // Gets all of the users
+    const user = users.find(u => u.email === email.toLowerCase() && u.password === password) // Gets the user credentials from users.json
 
-    if(!user){ // If the email/password is invalid,
+    if(!user){ // If the email/password isn't found,
         throw new Error('Invalid email or password.') // throw error
     }
 
-    return {id: user.id, email: user.email, role: user.role} // return the
+    return{id: user.id, email: user.email, role: user.role} // Returns the safe info
 }
